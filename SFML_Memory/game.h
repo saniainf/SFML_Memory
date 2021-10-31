@@ -1,9 +1,10 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include "card.h"
 #include <vector>
+#include "card.h"
+#include "assets.h"
 
-const int FIELD_SIZE = 500;
+const int FIELD_SIZE = 312;
 
 class Game : public sf::Drawable, public sf::Transformable {
 public:
@@ -15,5 +16,7 @@ public:
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
 private:
+    Assets assets;
     std::vector<Card> cards;
+    sf::RectangleShape borderShape;
 };

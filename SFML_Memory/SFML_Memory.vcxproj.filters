@@ -27,6 +27,9 @@
     <ClCompile Include="card.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="assets.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="image\beehive.png">
@@ -71,6 +74,9 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="card.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="assets.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

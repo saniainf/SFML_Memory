@@ -3,18 +3,18 @@
 
 int main() {
 
-    sf::RenderWindow window(sf::VideoMode(600, 600), "Memory Game");
+    sf::RenderWindow window(sf::VideoMode(393, 405), "Memory Game");
     window.setFramerateLimit(60);
 
     sf::Font font;
     font.loadFromFile("calibri.ttf");
 
     sf::Text text("F2 - New Game / Esc - Exit", font, 20);
-    text.setFillColor(sf::Color::Cyan);
+    text.setFillColor({ 255, 251, 179 });
     text.setPosition(5.f, 5.f);
 
     Game game;
-    game.setPosition(50.f, 50.f);
+    //game.setPosition(40.f, 50.f);
 
     sf::Vector2i mouse_pos;
     sf::Event event;
