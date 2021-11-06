@@ -5,10 +5,15 @@ Assets::Assets() {
 }
 
 Assets::~Assets() {
+    
 }
 
-void Assets::set_texture(std::string path) {
+void Assets::set_texture(const std::string& path) {
     sf::Texture texture;
     texture.loadFromFile(path);
     textures.push_back(texture);
+}
+
+sf::Texture& Assets::get_texture(int i){
+    return textures[i];
 }

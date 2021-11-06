@@ -25,10 +25,10 @@ void Game::initialize() {
     for (size_t i = 1; i <= 8; i++) {
         for (size_t j = 0; j < 2; j++) {
             Card card;
-            card.set_texture(assets.textures[0], assets.textures[i]);
+            card.set_texture(assets.get_texture(0), assets.get_texture(i));
             card.set_outline(sf::Color::Yellow, { 255, 255, 200 }, 2.0);
-            card.shape.setFillColor(sf::Color::White);
-            card.shape.setSize({ 64.0, 64.0 });
+            card.set_fill(sf::Color::White);
+            card.set_size({ 64.0, 64.0 });
             cards.push_back(card);
         }
     }
@@ -42,21 +42,19 @@ void Game::initialize() {
         for (size_t j = 0; j < 4; j++) {
             float x = 40 + 10 + 76.0 * i;
             float y = 50 + 10 + 76.0 * j;
-            cards[k++].shape.setPosition(x, y);
+            cards[k++].set_position({ x, y });
         }
     }
 }
 
 void Game::update(sf::Vector2i mouse_pos) {
     for (size_t i = 0; i < cards.size(); i++) {
-        if (cards[i].shape.getGlobalBounds().contains(mouse_pos.x, mouse_pos.y)) {
+        if (cards[i].contains({(float)mouse_pos.x, (float)mouse_pos.y })) {
             cards[i].states.isHover = true;
         }
         else {
             cards[i].states.isHover = false;
         }
-
-        cards[i].update();
     }
 }
 
@@ -65,6 +63,7 @@ void Game::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     target.draw(borderShape, states);
 
     for (size_t i = 0; i < cards.size(); i++) {
-        target.draw(cards[i].shape, states);
+        Card card = cards[i];
+        target.draw(card.get_rect(), states);
     }
 }

@@ -9,11 +9,10 @@ public:
     Assets();
     ~Assets();
 
-    std::vector<sf::Texture> textures;
-    void set_texture(std::string path);
-
+    void set_texture(const std::string& path);
+    sf::Texture& get_texture(int i);
 private:
-
+    std::vector<sf::Texture> textures;
 };
 
 
