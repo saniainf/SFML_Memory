@@ -1,11 +1,15 @@
 #include "card.h"
 
-Card::Card() {
-
+Card::Card(int id) {
+    this->id = id;
 }
 
 Card::~Card() {
 
+}
+
+int Card::get_id() {
+    return id;
 }
 
 void Card::set_texture(const sf::Texture& shirt, const sf::Texture& back) {
@@ -29,7 +33,7 @@ void Card::set_size(const sf::Vector2f& size) {
     shape.setSize(size);
 }
 
-void Card::set_position(const sf::Vector2f& pos){
+void Card::set_position(const sf::Vector2f& pos) {
     shape.setPosition(pos);
 }
 

@@ -13,10 +13,11 @@ struct CardStates {
 class Card {
 
 public:
-    Card();
+    Card(int id);
     ~Card();
     CardStates states;
 
+    int get_id();
     void set_texture(const sf::Texture& shirt, const sf::Texture& back);
     void set_outline(const sf::Color& color, const sf::Color& hoverColor, float thick);
     void set_fill(const sf::Color& color);
@@ -27,6 +28,7 @@ public:
     sf::RectangleShape shape;
 
 private:
+    int id;
     sf::Texture shirtTexture;
     sf::Texture backTexture;
     sf::Color outlineColor;
