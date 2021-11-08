@@ -2,6 +2,7 @@
 
 Card::Card(int _id) {
     id = _id;
+    open = false;
 }
 
 Card::~Card() {
@@ -15,6 +16,7 @@ int Card::get_id() {
 void Card::set_texture(const sf::Texture& shirt, const sf::Texture& back) {
     shirtTexture = shirt;
     backTexture = back;
+    shape.setTexture(&shirt);
 }
 
 void Card::set_outline(const sf::Color& color, const sf::Color& hoverColor, float thick) {
@@ -41,18 +43,38 @@ bool Card::contains(const sf::Vector2f point) {
     return shape.getGlobalBounds().contains(point);
 }
 
-const sf::RectangleShape& Card::get_rect() {
-    if (states.isOpen) {
+void Card::set_open(bool value) {
+    if (value) {
         shape.setTexture(&backTexture);
     }
     else {
         shape.setTexture(&shirtTexture);
     }
-    if (states.isHover) {
+    open = value;
+}
+
+bool Card::get_open() {
+    return open;
+}
+
+void Card::set_hover(bool value) {
+    if (value) {
         shape.setOutlineColor(outlineHoverColor);
     }
     else {
         shape.setOutlineColor(outlineColor);
     }
+}
+
+void Card::set_wrong_open(bool value) {
+    if (value) {
+        shape.setOutlineColor(sf::Color::Red);
+    }
+    else {
+        shape.setOutlineColor(outlineColor);
+    }
+}
+
+const sf::RectangleShape& Card::get_rect() {
     return shape;
 }

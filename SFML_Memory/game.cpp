@@ -58,11 +58,11 @@ void Game::update(sf::Vector2i mouse_pos, float dt) {
         wrongTimer -= dt;
         if (wrongTimer <= 0) {
             wrongTimer = EMPTY;
-            cards[cardFirstID].states.isOpen = false;
-            cards[cardFirstID].states.isWrong = false;
+            cards[cardFirstID].set_open(false);
+            cards[cardFirstID].set_wrong_open(false);
             cardFirstID = EMPTY;
-            cards[cardSecondID].states.isOpen = false;
-            cards[cardSecondID].states.isWrong = false;
+            cards[cardSecondID].set_open(false);
+            cards[cardSecondID].set_wrong_open(false);
             cardSecondID = EMPTY;
         }
         return;
@@ -83,8 +83,8 @@ void Game::update(sf::Vector2i mouse_pos, float dt) {
             cardSecondID = EMPTY;
         }
         else {
-            cards[cardFirstID].states.isWrong = true;
-            cards[cardSecondID].states.isWrong = true;
+            cards[cardFirstID].set_wrong_open(true);
+            cards[cardSecondID].set_wrong_open(true);
             wrongTimer = WRONGTIME;
         }
     }
@@ -105,15 +105,15 @@ int Game::update_input(sf::Vector2i& mouse_pos) {
     for (size_t i = 0; i < cards.size(); i++) {
         // hover
         if (cards[i].contains({ (float)mouse_pos.x, (float)mouse_pos.y })) {
-            cards[i].states.isHover = true;
+            cards[i].set_hover(true);
             // open
-            if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && !cards[i].states.isOpen) {
-                cards[i].states.isOpen = true;
-                resultID = cards[i].get_id();
+            if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && !cards[i].get_open()) {
+                cards[i].set_open(true);
+                resultID = i;
             }
         }
         else {
-            cards[i].states.isHover = false;
+            cards[i].set_hover(false);
         }
     }
     return resultID;
