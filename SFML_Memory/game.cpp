@@ -20,6 +20,9 @@ Game ::~Game() {
 
 void Game::initialize() {
     gameStates = GameStates::Close;
+    cardFirstID = EMPTY;
+    cardSecondID = EMPTY;
+    wrongTimer = EMPTY;
 
     for (size_t i = 0; i <= 11; i++) {
         assets.set_texture("image/" + std::to_string(i) + ".png");
@@ -50,17 +53,41 @@ void Game::initialize() {
     }
 }
 
-void Game::update(sf::Vector2i mouse_pos) {
-    if (gameStates == GameStates::WrongOpen) return;
-    int id;
-    if (update_input(mouse_pos, id))
-        if (open_card(id)) {
+void Game::update(sf::Vector2i mouse_pos, float dt) {
+    if (wrongTimer != EMPTY) {
+        wrongTimer -= dt;
+        if (wrongTimer <= 0) {
+            wrongTimer = EMPTY;
+            cards[cardFirstID].states.isOpen = false;
+            cards[cardFirstID].states.isWrong = false;
+            cardFirstID = EMPTY;
+            cards[cardSecondID].states.isOpen = false;
+            cards[cardSecondID].states.isWrong = false;
+            cardSecondID = EMPTY;
+        }
+        return;
+    }
+
+    int id = update_input(mouse_pos);
+    if (id == EMPTY) return;
+    if (cardFirstID == EMPTY) {
+        cardFirstID = id;
+    }
+    else {
+        cardSecondID = id;
+        std::cout << cards[cardFirstID].get_id() << "\n";
+        std::cout << cards[cardSecondID].get_id() << "\n";
+        if (cards[cardFirstID].get_id() == cards[cardSecondID].get_id()) {
             // начислить очки
-            gameStates = GameStates::Close;
+            cardFirstID = EMPTY;
+            cardSecondID = EMPTY;
         }
         else {
-            gameStates = GameStates::WrongOpen;
+            cards[cardFirstID].states.isWrong = true;
+            cards[cardSecondID].states.isWrong = true;
+            wrongTimer = WRONGTIME;
         }
+    }
 }
 
 void Game::draw(sf::RenderTarget& target, sf::RenderStates states) const {
@@ -73,7 +100,8 @@ void Game::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     }
 }
 
-bool Game::update_input(sf::Vector2i& mouse_pos, int& id) {
+int Game::update_input(sf::Vector2i& mouse_pos) {
+    int resultID = EMPTY;
     for (size_t i = 0; i < cards.size(); i++) {
         // hover
         if (cards[i].contains({ (float)mouse_pos.x, (float)mouse_pos.y })) {
@@ -81,23 +109,12 @@ bool Game::update_input(sf::Vector2i& mouse_pos, int& id) {
             // open
             if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && !cards[i].states.isOpen) {
                 cards[i].states.isOpen = true;
-                id = cards[i].get_id();
-                return true;
+                resultID = cards[i].get_id();
             }
         }
         else {
             cards[i].states.isHover = false;
         }
     }
-    return false;
-}
-
-bool Game::open_card(const int id) {
-    if (gameStates == GameStates::Close) {
-        gameStates = GameStates::OneOpen;
-        openID = id;
-    }
-    else if (gameStates == GameStates::OneOpen) {
-        return openID == id;
-    }
+    return resultID;
 }

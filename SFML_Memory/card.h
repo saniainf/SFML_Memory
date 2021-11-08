@@ -7,6 +7,7 @@ struct CardStates {
     bool isPress = false;
     bool isRelease = false;
     bool isClick = false;
+    bool isWrong = false;
 };
 
 

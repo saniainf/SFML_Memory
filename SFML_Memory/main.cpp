@@ -15,13 +15,16 @@ int main() {
 
     Game game;
     //game.setPosition(40.f, 50.f);
-
+    sf::Clock clock;
+    float deltaTime;
     sf::Vector2i mouse_pos;
     sf::Event event;
 
     game.initialize();
 
     while (window.isOpen()) {
+        deltaTime = clock.getElapsedTime().asSeconds();
+        clock.restart();
 
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed) {
@@ -38,7 +41,7 @@ int main() {
         }
 
         mouse_pos = sf::Mouse::getPosition(window);
-        game.update(mouse_pos);
+        game.update(mouse_pos, deltaTime);
 
         window.clear();
         window.draw(game);

@@ -1,7 +1,7 @@
 #include "card.h"
 
-Card::Card(int id) {
-    this->id = id;
+Card::Card(int _id) {
+    id = _id;
 }
 
 Card::~Card() {

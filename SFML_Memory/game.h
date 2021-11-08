@@ -4,6 +4,9 @@
 #include "card.h"
 #include "assets.h"
 
+constexpr auto EMPTY = -1;
+constexpr auto WRONGTIME = 1.5;
+
 const int FIELD_SIZE = 312;
 
 enum GameStates {
@@ -19,15 +22,16 @@ public:
     ~Game();
 
     void initialize();
-    void update(sf::Vector2i mouse_pos);
+    void update(sf::Vector2i mouse_pos, float dt);
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
-    bool update_input(sf::Vector2i& mouse_pos, int& id);
-    bool open_card(const int id);
+    int update_input(sf::Vector2i& mouse_pos);
 
 private:
     Assets assets;
     std::vector<Card> cards;
     sf::RectangleShape borderShape;
     GameStates gameStates;
-    int openID;
+    int cardFirstID;
+    int cardSecondID;
+    float wrongTimer;
 };
