@@ -17,3 +17,11 @@ void Assets::set_texture(const std::string& path) {
 sf::Texture& Assets::get_texture(int i){
     return textures[i];
 }
+
+void Assets::set_font(const std::string& path){
+    font.loadFromFile(path);
+}
+
+sf::Font& Assets::get_font(){
+    return font;
+}

@@ -9,29 +9,31 @@ constexpr auto WRONGTIME = 1.5;
 
 const int FIELD_SIZE = 312;
 
-enum GameStates {
-    Close,
-    OneOpen,
-    TwoOpen,
-    WrongOpen
-};
-
 class Game : public sf::Drawable, public sf::Transformable {
 public:
-    Game();
+    Game(Assets assets);
     ~Game();
 
+    void load();
     void initialize();
-    void update(sf::Vector2i mouse_pos, float dt);
+    bool update(sf::Vector2i mouse_pos, float dt);
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
-    int update_input(sf::Vector2i& mouse_pos);
 
 private:
     Assets assets;
     std::vector<Card> cards;
     sf::RectangleShape borderShape;
-    GameStates gameStates;
     int cardFirstID;
     int cardSecondID;
     float wrongTimer;
+    bool gameWin;
+    float time;
+    int moveCount;
+    sf::Text moveText;
+    sf::Text timeText;
+    std::string timeString;
+    std::string moveString;
+    std::string get_time_str(int sec);
+    int update_input(sf::Vector2i& mouse_pos);
+    void check_win();
 };

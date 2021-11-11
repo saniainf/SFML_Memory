@@ -1,25 +1,42 @@
 #include <SFML/Graphics.hpp>
 #include "game.h"
+#include "assets.h"
 
 int main() {
+    Assets assets;
 
-    sf::RenderWindow window(sf::VideoMode(393, 405), "Memory Game");
+    int wWidth = 392;
+    int wHeight = 392;
+    bool gameWin = false;
+
+    sf::RenderWindow window(sf::VideoMode(wWidth, wHeight), "Memory Game");
     window.setFramerateLimit(60);
 
-    sf::Font font;
-    font.loadFromFile("calibri.ttf");
+    for (size_t i = 0; i <= 11; i++) {
+        assets.set_texture("image/" + std::to_string(i) + ".png");
+    }
+    assets.set_font("calibri.ttf");
 
-    sf::Text text("F2 - New Game / Esc - Exit", font, 20);
-    text.setFillColor({ 255, 251, 179 });
-    text.setPosition(5.f, 5.f);
+    sf::Text menuText("F2 - New Game / Esc - Exit", assets.get_font(), 16);
+    sf::Text winText("YOU WIN", assets.get_font(), 64);
+    menuText.setFillColor({ 255, 251, 179 });
+    menuText.setPosition(10.f, wHeight - 31.f);
+    winText.setFillColor(sf::Color::Red);
+    winText.setOutlineColor(sf::Color::White);
+    winText.setOutlineThickness(5.f);
 
-    Game game;
-    //game.setPosition(40.f, 50.f);
+    float winTextWidth = winText.getGlobalBounds().width;
+    float winTextHeight = winText.getGlobalBounds().height;
+
+    winText.setPosition((wWidth / 2 - winTextWidth / 2), (wHeight / 2 - winTextHeight / 2 - 15));
+
+    Game game(assets);
     sf::Clock clock;
     float deltaTime;
-    sf::Vector2i mouse_pos;
+    sf::Vector2i mousePos;
     sf::Event event;
 
+    game.load();
     game.initialize();
 
     while (window.isOpen()) {
@@ -36,16 +53,20 @@ int main() {
                 }
                 if (event.key.code == sf::Keyboard::F2) {
                     game.initialize();
+                    gameWin = false;
                 }
             }
         }
 
-        mouse_pos = sf::Mouse::getPosition(window);
-        game.update(mouse_pos, deltaTime);
+        mousePos = sf::Mouse::getPosition(window);
+        if (!gameWin)
+            gameWin = game.update(mousePos, deltaTime);
 
         window.clear();
         window.draw(game);
-        window.draw(text);
+        window.draw(menuText);
+        if (gameWin)
+            window.draw(winText);
         window.display();
     }
 
