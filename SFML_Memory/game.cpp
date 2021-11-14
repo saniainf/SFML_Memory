@@ -50,9 +50,9 @@ void Game::initialize() {
     time = 0;
     moveCount = 0;
 
-    //std::random_device rd;
-    //std::mt19937 g(rd());
-    //std::shuffle(cards.begin(), cards.end(), g);
+    std::random_device rd;
+    std::mt19937 g(rd());
+    std::shuffle(cards.begin(), cards.end(), g);
 
     int k = 0;
     for (size_t i = 0; i < 4; i++) {
